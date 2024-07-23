@@ -3,6 +3,10 @@ package de.c8121.binarywrapper.util;
 import java.io.IOException;
 import java.nio.file.Path;
 
+/**
+ * Provides the path to binary (executable) files.
+ * Parses path names if necessary.
+ */
 public interface BinaryProvider {
 
     /**

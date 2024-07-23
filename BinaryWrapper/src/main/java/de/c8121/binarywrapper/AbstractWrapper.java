@@ -1,6 +1,7 @@
 package de.c8121.binarywrapper;
 
-import de.c8121.binarywrapper.io.ExternalProcess;
+import de.c8121.binarywrapper.io.ProcessExecutor;
+import de.c8121.binarywrapper.io.RunningProcess;
 import de.c8121.binarywrapper.util.BinaryProvider;
 import de.c8121.binarywrapper.util.CygwinProvider;
 import de.c8121.binarywrapper.util.LinuxProvider;
@@ -10,8 +11,10 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
-public abstract class AbstractWrapper {
+public abstract class AbstractWrapper extends ProcessExecutor {
 
     public final static String OS_NAME = java.lang.System.getProperty("os.name", "null").toLowerCase();
     public final static boolean IS_WINDOWS = OS_NAME.contains("windows");
@@ -22,6 +25,7 @@ public abstract class AbstractWrapper {
 
     private final List<String> commandOptions = new ArrayList<>();
     private final List<String> commandArgs = new ArrayList<>();
+
 
     /**
      *
@@ -38,10 +42,11 @@ public abstract class AbstractWrapper {
         this.binaryFileLocation = BINARY_PROVIDER.build(IS_WINDOWS ? cygwinBinaryName : linuxBinaryName);
     }
 
+
     /**
      *
      */
-    public void addCommandOption(String name, String value) {
+    protected void addCommandOption(String name, String value) {
 
         Objects.requireNonNull(name);
         if (name.isEmpty()) throw new IllegalArgumentException("Empty name");
@@ -56,7 +61,7 @@ public abstract class AbstractWrapper {
     /**
      *
      */
-    public void addCommandOption(String name) {
+    protected void addCommandOption(String name) {
 
         Objects.requireNonNull(name);
         if (name.isEmpty()) throw new IllegalArgumentException("Empty name");
@@ -67,7 +72,7 @@ public abstract class AbstractWrapper {
     /**
      *
      */
-    public void addCommandArgs(String arg) {
+    protected void addCommandArgs(String arg) {
 
         Objects.requireNonNull(arg);
         if (arg.isEmpty()) throw new IllegalArgumentException("Empty arg");
@@ -82,17 +87,24 @@ public abstract class AbstractWrapper {
         return this.binaryFileLocation;
     }
 
+
     /**
-     * Execute command
+     * Execute command asynchronous
      */
-    public ExternalProcess.SyncResult run() throws IOException, InterruptedException {
-        var process = new ExternalProcess(this.build());
-        return process.run();
+    public RunningProcess execute() throws IOException, InterruptedException {
+        return this.execute(this.build());
+    }
+
+    /**
+     * Execute command synchronous
+     */
+    public RunningProcess execute(long idleTimeoutMs) throws IOException, ExecutionException, TimeoutException, InterruptedException {
+        return this.execute(this.build(), idleTimeoutMs);
     }
 
     /**
      * Build command line like <code>[binary, options, args]</code>
-     * to be used in {@link ExternalProcess}
+     * to be used in {@link ProcessExecutor}
      */
     protected List<String> build() {
         var cmdLine = new ArrayList<String>(1 + this.commandOptions.size() + this.commandArgs.size());
