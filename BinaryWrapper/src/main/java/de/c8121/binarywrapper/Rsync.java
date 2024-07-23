@@ -19,8 +19,23 @@ public class Rsync extends AbstractWrapper {
         return this;
     }
 
+    public Rsync verbose() {
+        this.addCommandOption("-v");
+        return this;
+    }
+
+    public Rsync archive() {
+        this.addCommandOption("-a");
+        return this;
+    }
+
     public Rsync recursive() {
         this.addCommandOption("-r");
+        return this;
+    }
+
+    public Rsync delete() {
+        this.addCommandOption("--delete");
         return this;
     }
 
