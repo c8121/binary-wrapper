@@ -39,6 +39,14 @@ public class Rsync extends AbstractWrapper {
         return this;
     }
 
+    /**
+     * Configures rsync to use ssh (<code>-e path-to-ssh</code>)
+     */
+    public Rsync useSsh() throws IOException {
+        this.addCommandOption("-e", new Ssh().binaryFileLocation().toString());
+        return this;
+    }
+
     public Rsync src(String src) {
         this.addCommandArgs(BINARY_PROVIDER.parsePathName(src));
         return this;
