@@ -40,10 +40,16 @@ public class Rsync extends AbstractWrapper {
     }
 
     /**
-     * Configures rsync to use ssh (<code>-e path-to-ssh</code>)
+     * Configures rsync to use ssh (<code>-e "ssh.exe -i keyFile"</code>)
      */
-    public Rsync useSsh() throws IOException {
-        this.addCommandOption("-e", new Ssh().binaryFileLocation().toString());
+    public Rsync useSsh(String keyFile) throws IOException {
+        this.addCommandOption("-e",
+                new Ssh().binaryFileLocation().toString() + (
+                        keyFile != null && !keyFile.isBlank()
+                                ? " -i '" + keyFile + "'"
+                                : ""
+                )
+        );
         return this;
     }
 
