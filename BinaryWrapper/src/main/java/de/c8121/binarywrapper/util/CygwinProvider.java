@@ -23,7 +23,7 @@ public class CygwinProvider implements BinaryProvider {
     private volatile boolean cygwinReady = false;
 
     /**
-     * List of possible locations (directories) to save cygwin binaries to.
+     * Get location (directory) to save cygwin binaries to.
      */
     static Path getCygwinBaseDir() {
 
@@ -142,11 +142,13 @@ public class CygwinProvider implements BinaryProvider {
                     if (this.cygwinLocation == null)
                         throw new IOException("Cannot determine or create cygwin location");
 
-                    //Copy Cygwin binaries if not exists
+                    //Copy Cygwin binaries if not exists, or if outdated
                     var files = this.files != null ? this.files : findFiles();
                     for (var file : files) {
                         var path = this.cygwinLocation.resolve(file);
                         if (!Files.exists(path)) {
+                            copy(file, this.cygwinLocation);
+                        } else if (Files.getLastModifiedTime(path).toMillis() < this.cygwinLocation.toFile().lastModified()) {
                             copy(file, this.cygwinLocation);
                         }
                     }
