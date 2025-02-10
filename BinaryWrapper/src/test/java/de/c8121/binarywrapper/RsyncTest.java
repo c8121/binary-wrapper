@@ -34,10 +34,9 @@ class RsyncTest {
         var err = new ProcessOutputBuffer();
 
         TestRsync cmd = new TestRsync()
+                .version()
                 .outConsumer(out)
                 .errConsumer(err);
-
-        cmd.version();
 
 
         var result = cmd.execute();

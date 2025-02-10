@@ -114,4 +114,22 @@ public abstract class AbstractWrapper extends ProcessExecutor {
 
         return cmdLine;
     }
+
+    /**
+     * Build command line like <code>[binary, options, args]</code>
+     * to be used in Shell.
+     */
+    public String buildForCli() {
+        var s = new StringBuilder();
+
+        var cmd = this.build();
+        for (var i : cmd) {
+            if (!s.isEmpty()) s.append(" ");
+            if (i.contains(" "))
+                s.append('\'').append(i).append('\'');
+            else
+                s.append(i);
+        }
+        return s.toString();
+    }
 }

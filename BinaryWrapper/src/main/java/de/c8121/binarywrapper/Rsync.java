@@ -44,11 +44,18 @@ public class Rsync extends AbstractWrapper {
      */
     public Rsync useSsh(String keyFile) throws IOException {
         this.addCommandOption("-e",
-                new Ssh().binaryFileLocation().toString() + (
-                        keyFile != null && !keyFile.isBlank()
-                                ? " -i '" + keyFile + "'"
-                                : ""
-                )
+                new Ssh()
+                        .keyFile(keyFile)
+                        .buildForCli()
+        );
+        return this;
+    }
+
+    public Rsync useSshPass(char[] password) throws IOException {
+        this.addCommandOption("-e",
+                new Ssh()
+                        .sshPass(password)
+                        .buildForCli()
         );
         return this;
     }
