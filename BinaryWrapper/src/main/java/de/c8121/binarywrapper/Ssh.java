@@ -17,12 +17,12 @@ public class Ssh extends AbstractWrapper {
         super(LINUX_BINARY_NAME, WINDOWS_BINARY_NAME);
     }
 
-    public Ssh userAndHost(String user, String host) throws IOException {
+    public Ssh userAndHost(String user, String host) {
         this.addCommandOption(user + "@" + host);
         return this;
     }
 
-    public Ssh keyFile(String keyFilePath) throws IOException {
+    public Ssh keyFile(String keyFilePath) {
         this.addCommandOption("-i", keyFilePath);
         return this;
     }
