@@ -79,6 +79,14 @@ public class Rsync extends AbstractWrapper {
         return this;
     }
 
+    /**
+     * Configures rsync to use a password file: <code>--password-file="..."</code>.
+     * Note: This Option may only be used when accessing a rsync daemon.
+     */
+    public Rsync usePasswordFile(String passwordFile) {
+        this.addCommandOption("--password-file=\"" + passwordFile + "\"");
+        return this;
+    }
 
     /**
      * Path to local source directory or file
