@@ -67,12 +67,43 @@ public class Rsync extends AbstractWrapper {
     }
 
     /**
+     * Configures rsync to use ssh (<code>-e "ssh.exe -p port -i keyFile"</code>)
+     *
+     * @param port port-number (will be ignored if port <= 0, see {@link Ssh#port(int)})
+     */
+    public Rsync useSsh(int port, String keyFile) throws IOException {
+        this.addCommandOption("-e",
+                new Ssh()
+                        .port(port)
+                        .keyFile(keyFile)
+                        .buildForCli()
+        );
+        return this;
+    }
+
+    /**
      * Configures rsync to use ssh with sshpass (<code>-e "sshpass ... ssh.exe"</code>)
      * Please note the "SECURITY CONSIDERATIONS" in <code>man sshpass</code>
      */
     public Rsync useSshPass(char[] password) throws IOException {
         this.addCommandOption("-e",
                 new Ssh()
+                        .sshPass(password)
+                        .buildForCli()
+        );
+        return this;
+    }
+
+    /**
+     * Configures rsync to use ssh with sshpass (<code>-e "sshpass ... ssh.exe -p port"</code>)
+     * Please note the "SECURITY CONSIDERATIONS" in <code>man sshpass</code>
+     *
+     * @param port port-number (will be ignored if port <= 0, see {@link Ssh#port(int)})
+     */
+    public Rsync useSshPass(int port, char[] password) throws IOException {
+        this.addCommandOption("-e",
+                new Ssh()
+                        .port(port)
                         .sshPass(password)
                         .buildForCli()
         );

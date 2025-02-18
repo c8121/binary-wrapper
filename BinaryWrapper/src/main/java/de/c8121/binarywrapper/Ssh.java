@@ -22,6 +22,17 @@ public class Ssh extends AbstractWrapper {
         return this;
     }
 
+    /**
+     * Set tcp-port to be used (only if port > 0)
+     *
+     * @param port port-number (call will have no effect if port <= 0)
+     */
+    public Ssh port(int port) {
+        if (port > 0)
+            this.addCommandOption("-p", Integer.toString(port));
+        return this;
+    }
+
     public Ssh keyFile(String keyFilePath) {
         this.addCommandOption("-i", keyFilePath);
         return this;
