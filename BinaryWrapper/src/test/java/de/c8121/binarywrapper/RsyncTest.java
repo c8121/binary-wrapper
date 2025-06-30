@@ -49,7 +49,7 @@ class RsyncTest {
         assertFalse(out.buf().isEmpty());
         assertTrue(err.buf().isEmpty());
 
-        System.out.println(out.buf().toString());
+        System.out.println(out.buf());
     }
 
     @Test

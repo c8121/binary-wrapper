@@ -52,6 +52,9 @@ public class Scp extends AbstractWrapper {
         return this;
     }
 
+    /**
+     * Key-auth file, <code>-i</code> in ssh
+     */
     public Scp keyFile(String keyFilePath) {
         this.addCommandOption("-i", keyFilePath);
         return this;

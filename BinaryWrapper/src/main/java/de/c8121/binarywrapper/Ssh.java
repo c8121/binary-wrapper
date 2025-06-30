@@ -17,6 +17,9 @@ public class Ssh extends AbstractWrapper {
         super(LINUX_BINARY_NAME, WINDOWS_BINARY_NAME);
     }
 
+    /**
+     * Username and Host like in <code>ssh <strong>user@host</strong></code>
+     */
     public Ssh userAndHost(String user, String host) {
         this.addCommandOption(user + "@" + host);
         return this;
@@ -33,6 +36,9 @@ public class Ssh extends AbstractWrapper {
         return this;
     }
 
+    /**
+     * Key-auth file, <code>-i</code> in ssh
+     */
     public Ssh keyFile(String keyFilePath) {
         this.addCommandOption("-i", keyFilePath);
         return this;
@@ -48,6 +54,9 @@ public class Ssh extends AbstractWrapper {
         return this;
     }
 
+    /**
+     * Command to execute: <code>ssh command</code>
+     */
     public Ssh command(String command) {
         this.addCommandArgs(command);
         return this;

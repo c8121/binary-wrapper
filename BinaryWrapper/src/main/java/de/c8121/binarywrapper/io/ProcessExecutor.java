@@ -1,7 +1,5 @@
 package de.c8121.binarywrapper.io;
 
-import de.c8121.binarywrapper.AbstractWrapper;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.*;
@@ -14,7 +12,7 @@ public class ProcessExecutor {
 
 
     private Consumer<Integer> outConsumer = (i) -> System.out.print((char) i.intValue());
-    private Consumer<Integer> errConsumer = (i) -> System.out.print((char) i.intValue());
+    private Consumer<Integer> errConsumer = (i) -> System.err.print((char) i.intValue());
 
     /**
      * {@link ExecutorService} to be used.
@@ -52,7 +50,7 @@ public class ProcessExecutor {
         if (this.executorService == null) {
             this.executorService = defaultExecutorService;
             if (this.executorService == null) {
-                synchronized (AbstractWrapper.class) {
+                synchronized (ProcessExecutor.class) {
                     var es = Executors.newCachedThreadPool();
                     defaultExecutorService = es;
                     this.executorService = es;

@@ -17,11 +17,18 @@ public class SshPass extends AbstractWrapper {
         super(LINUX_BINARY_NAME, WINDOWS_BINARY_NAME);
     }
 
+    /**
+     * <code>sshpass -p...</code>
+     */
     public SshPass password(char[] password) {
         this.addCommandOption("-p", new String(password));
         return this;
     }
 
+    /**
+     * The command to run after sshpass own options.
+     * Typically, it will be "ssh" with arguments
+     */
     public SshPass command(AbstractWrapper command) {
         this.command = command;
         return this;
