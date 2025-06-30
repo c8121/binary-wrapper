@@ -62,6 +62,30 @@ public class Ssh extends AbstractWrapper {
         return this;
     }
 
+    /**
+     * Requests ssh to go to background (<code>-f</code>)
+     */
+    public Ssh goToBackground() {
+        this.addCommandOption("-f");
+        return this;
+    }
+
+    /**
+     * Do not execute a remote command.  This is useful for just forwarding ports. (<code>-N</code>)
+     */
+    public Ssh dontExecuteRemoteCommand() {
+        this.addCommandOption("-N");
+        return this;
+    }
+
+    /**
+     * Forward local port (<code>-L port:host:hostport</code>)
+     */
+    public Ssh forwardLocal(int localPort, String remoteHost, int remotePort) {
+        this.addCommandOption("-L", localPort + ":" + remoteHost + ":" + remotePort);
+        return this;
+    }
+
     @Override
     protected List<String> build() {
         var cmd = super.build();
